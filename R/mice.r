@@ -457,8 +457,13 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
         setup$meth <- meth
         return(setup)
     }
+    
+    
+    ## ------------------------------BEGIN FUNCTION-------------------------------
+    
 
     ## Start with some preliminary calculations and error checks
+    print("Starting function...")
     call <- match.call()
     if (!is.na(seed))
         set.seed(seed)  ## FEH 1apr02
@@ -471,12 +476,16 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
     if (sum(nmis) == 0)
         stop("No missing values found")
     varnames <- dimnames(data)[[2]]
+    
+    print("Got to point 1...")
 
     ## list for storing current computational state
     state <- list(it = 0, im = 0, co = 0, dep = "", meth = "", log = FALSE)
 
     ## data frame for storing the event log
     loggedEvents <- data.frame(it = 0, im = 0, co = 0, dep = "", meth = "", out = "")
+    
+    print("Got to point 2...")
 
     ## Perform various validity checks on the specified arguments
     if (!is.null(imputationMethod))
@@ -493,6 +502,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
     setup <- check.method(setup, data)
     setup <- check.predictorMatrix(setup)
     setup <- check.data(setup, data, ...)
+    
+    print("Got to point 3...")
 
     ## Pad the imputation model with dummy variables for the factors
     method <- setup$method
@@ -502,6 +513,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
     p <- padModel(data, method, predictorMatrix, visitSequence, form, post, nmis, nvar)
     if (sum(duplicated(names(p$data))) > 0)
         stop("Column names of padded data should be unique")
+    
+    print("Got to point 4...")
 
     ## Initialize response matrix r, imputation array imp, as well as some other stuff
     r <- (!is.na(p$data))
@@ -530,6 +543,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
             }
         }
     }
+    
+    print("Got to point 5...")
 
     # OK. Iterate.
     from <- 1
@@ -538,6 +553,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
 
     ## restore the original NA's in the data
     for (j in p$visitSequence) p$data[(!r[, j]), j] <- NA
+    
+    print("Got to point 6...")
 
     ## delete data and imputations of automatic dummy variables
     imp <- q$imp[1:nvar]
@@ -550,6 +567,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
         loggedEvents <- NULL
     if (state$log)
         row.names(loggedEvents) <- 1:nrow(loggedEvents)
+    
+    print("Got to point 7...")
 
     ## save, and return
     midsobj <- list(call = call, data = as.data.frame(p$data[, 1:nvar]), m = m, nmis = nmis, imp = imp, method = method, predictorMatrix = predictorMatrix,
@@ -558,5 +577,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
     if (diagnostics)
         midsobj <- c(midsobj, list(pad = p))
     oldClass(midsobj) <- "mids"
+    
+    print("Completed function successfully.")
+    
     return(midsobj)
 }  # END OF MICE FUNCTION
