@@ -240,6 +240,7 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
     # Copyright (c) 2010 TNO Quality of Life, Leiden
     #
     # ------------------------------CHECK.VISITSEQUENCE------------------------
+  
     check.visitSequence <- function(setup) {
         nmis <- setup$nmis
         nvar <- setup$nvar
@@ -379,6 +380,7 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
         setup$method <- method
         return(setup)
     }
+    
     ## ------------------------------CHECK.data-------------------------------
 
     check.data <- function(setup, data, allow.na = FALSE, ...) {
@@ -577,6 +579,8 @@ mice <- function(data, m = 5, method = vector("character", length = ncol(data)),
     if (diagnostics)
         midsobj <- c(midsobj, list(pad = p))
     oldClass(midsobj) <- "mids"
+    
+    print("Got to point 8...")
     
     print("Completed function successfully.")
     
